@@ -5,7 +5,6 @@ const roleMiddleware = (allowedRoles) => {
     }
 
     const { role } = req.user; 
-
     if (allowedRoles.includes(role)) {
       next();
     } else {

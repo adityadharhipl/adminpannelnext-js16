@@ -4,8 +4,6 @@ import auth from '../middleware/authMiddleware.js';
 import roleMiddleware from '../middleware/roleMiddleware.js';  
 
 const router = express.Router();
-
-
 router.get(
   '/users',
   auth,           
