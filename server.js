@@ -12,7 +12,22 @@ import vehicleRoutes from "./routes/vehicleReviewRoutes.js";
 dotenv.config();
 connectDB();
 
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Ensure uploads directory exists
+const uploadDir = path.join(__dirname, 'uploads/profile');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 const app = express();
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use(cors());
 app.use(express.json());
@@ -25,6 +40,6 @@ app.use("/api/vehicle", vehicleRoutes);
 
 
 // app.listen(5001, () => console.log("Server running on 5000"));
-  app.listen(process.env.PORT || 5001, () =>
-    console.log("Server running on 5001")
-  );
+app.listen(process.env.PORT || 5001, () =>
+  console.log("Server running on 5001")
+);
