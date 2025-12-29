@@ -67,10 +67,23 @@ export const changePassword = createAsyncThunk(
     'auth/changePassword',
     async (passwordData: any, { rejectWithValue }) => {
         try {
-            const response = await axiosInstance.post('/users/change-password', passwordData);
+            const response = await axiosInstance.put('/users/change-password', passwordData);
             return response.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data?.message || 'Password change failed');
+        }
+    }
+);
+
+// Async thunk for forgot password
+export const forgotPassword = createAsyncThunk(
+    'auth/forgotPassword',
+    async (email: string, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.post('/auth/forgot-password', { email });
+            return response.data;
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data?.message || 'Failed to send reset email');
         }
     }
 );
@@ -145,7 +158,7 @@ const authSlice = createSlice({
             if (action.payload.user) {
                 state.user = { ...state.user, ...action.payload.user };
             } else {
-                 // Fallback if structure is different
+                // Fallback if structure is different
                 state.user = { ...state.user, ...action.payload };
             }
         });
@@ -160,10 +173,24 @@ const authSlice = createSlice({
             state.error = null;
         });
         builder.addCase(changePassword.fulfilled, (state) => {
-             state.isLoading = false;
-             // No state change needed for user/token usually, just success indication
+            state.isLoading = false;
+            // No state change needed for user/token usually, just success indication
         });
         builder.addCase(changePassword.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload as string;
+        });
+
+
+        // Forgot Password
+        builder.addCase(forgotPassword.pending, (state) => {
+            state.isLoading = true;
+            state.error = null;
+        });
+        builder.addCase(forgotPassword.fulfilled, (state) => {
+            state.isLoading = false;
+        });
+        builder.addCase(forgotPassword.rejected, (state, action) => {
             state.isLoading = false;
             state.error = action.payload as string;
         });

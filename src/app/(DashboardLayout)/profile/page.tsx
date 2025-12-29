@@ -86,7 +86,7 @@ const ProfilePage = () => {
         }
 
         try {
-            const resultAction = await dispatch(changePassword({ currentPassword, newPassword }));
+            const resultAction = await dispatch(changePassword({ currentPassword, newPassword, confirmPassword }));
             if (changePassword.fulfilled.match(resultAction)) {
                 toast.success("Password changed successfully");
                 setCurrentPassword('');
