@@ -85,8 +85,8 @@ const ProfilePage = () => {
         fileInputRef.current?.click();
     };
 
-    if (!isAuthenticated) return <Alert severity="warning">Please login.</Alert>;
-    if (loading) return <CircularProgress />;
+    // if (!isAuthenticated) return <Alert severity="warning">Please login.</Alert>;
+    // if (loading) return <CircularProgress />;
 
     return (
         <Box sx={{ p: 3, maxWidth: '1000px', margin: '0 auto' }}>
