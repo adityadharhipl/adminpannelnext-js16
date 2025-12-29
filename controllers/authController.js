@@ -98,7 +98,8 @@ export const forgotPassword = async (req, res) => {
     // USE BASE_URL (Backend)
     // NOTE: Because you have no Frontend, the user cannot 'Click' this to see a form.
     // They must Copy the TOKEN from this link to use in Postman.
-    const link = `${process.env.BASE_URL}/api/auth/reset-password/${token}`;
+    const link = `http://localhost:5001/api/auth/reset-password/${token}`;
+    // const link = `${process.env.BASE_URL}/api/auth/reset-password/${token}`;
 
     await sendEmail(email, "Reset Password", `
       <p>You requested a password reset.</p>
