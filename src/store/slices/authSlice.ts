@@ -45,6 +45,36 @@ export const loginUser = createAsyncThunk(
     }
 );
 
+// Async thunk for updating profile
+export const updateMyProfile = createAsyncThunk(
+    'auth/updateProfile',
+    async (formData: FormData, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.put('/users/update-profile', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            return response.data;
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data?.message || 'Profile update failed');
+        }
+    }
+);
+
+// Async thunk for changing password
+export const changePassword = createAsyncThunk(
+    'auth/changePassword',
+    async (passwordData: any, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.post('/users/change-password', passwordData);
+            return response.data;
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data?.message || 'Password change failed');
+        }
+    }
+);
+
 const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -60,6 +90,9 @@ const authSlice = createSlice({
             state.token = action.payload.token;
             state.user = action.payload.user;
             state.isAuthenticated = true;
+        },
+        updateUser: (state, action) => {
+            state.user = { ...state.user, ...action.payload };
         }
     },
     extraReducers: (builder) => {
@@ -97,8 +130,45 @@ const authSlice = createSlice({
             state.isLoading = false;
             state.error = action.payload as string;
         });
+
+        // Update Profile
+        builder.addCase(updateMyProfile.pending, (state) => {
+            state.isLoading = true;
+            state.error = null;
+        });
+        builder.addCase(updateMyProfile.fulfilled, (state, action) => {
+            state.isLoading = false;
+            // The backend returns { success: true, msg: "...", user: { ... } }
+            // or sometimes directly the user object depending on the controller provided.
+            // Based on user snippet: res.json({ success: true, msg: "...", user: { ... } });
+            // So we need to access action.payload.user
+            if (action.payload.user) {
+                state.user = { ...state.user, ...action.payload.user };
+            } else {
+                 // Fallback if structure is different
+                state.user = { ...state.user, ...action.payload };
+            }
+        });
+        builder.addCase(updateMyProfile.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload as string;
+        });
+
+        // Change Password
+        builder.addCase(changePassword.pending, (state) => {
+            state.isLoading = true;
+            state.error = null;
+        });
+        builder.addCase(changePassword.fulfilled, (state) => {
+             state.isLoading = false;
+             // No state change needed for user/token usually, just success indication
+        });
+        builder.addCase(changePassword.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload as string;
+        });
     },
 });
 
-export const { logout, setCredentials } = authSlice.actions;
+export const { logout, setCredentials, updateUser } = authSlice.actions;
 export default authSlice.reducer;
