@@ -1,3 +1,4 @@
+'use client';
 import React from "react";
 import Menuitems from "./MenuItems";
 import { Box, Typography, useTheme } from "@mui/material";
@@ -12,6 +13,7 @@ import { IconPoint } from '@tabler/icons-react';
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Upgrade } from "./Updrade";
+import { useAppSelector } from '@/store/hooks';
 
 
 const renderMenuItems = (items: any, pathDirect: any) => {
@@ -34,7 +36,7 @@ const renderMenuItems = (items: any, pathDirect: any) => {
 
     //If the item has children (submenu)
     if (item.children) {
-      const isChildActive = item.children.some((child: any) => child.href === pathDirect);
+      const isChildActive = item.children.some((child: any) => child.href === pathDirect || (child.href !== '/' && pathDirect.startsWith(child.href)));
       return (
         <Submenu
           key={item.id}
@@ -56,7 +58,7 @@ const renderMenuItems = (items: any, pathDirect: any) => {
       <Box px={3} key={item.id}>
         <MenuItem
           key={item.id}
-          isSelected={pathDirect === item?.href}
+          isSelected={pathDirect === item?.href || (item?.href !== '/' && pathDirect.startsWith(item?.href))}
           borderRadius='8px'
           icon={itemIcon}
           link={item.href}
@@ -75,6 +77,14 @@ const SidebarItems = () => {
   const pathname = usePathname();
   const pathDirect = pathname;
   const theme = useTheme();
+  const { user } = useAppSelector((state) => state.auth);
+
+  const filteredItems = Menuitems.filter((item: any) => {
+    if (item.roles) {
+      return item.roles.includes(user?.role);
+    }
+    return true;
+  });
 
   // Theme-aware colors
   const themeColor = theme.palette.mode === 'dark' ? '#6366f1' : '#5D87FF';
@@ -135,7 +145,7 @@ const SidebarItems = () => {
 
         <Logo img={logoSrc} component={Link} to="/" >My Admin</Logo>
 
-        {renderMenuItems(Menuitems, pathDirect)}
+        {renderMenuItems(filteredItems, pathDirect)}
         <Box px={2}>
           {/* <Upgrade /> */}
         </Box>

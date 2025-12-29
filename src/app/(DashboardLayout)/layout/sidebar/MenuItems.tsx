@@ -1,90 +1,92 @@
 import {
-  IconAperture,
-  IconBook2,
-  IconCopy,
   IconLayoutDashboard,
-  IconLogin,
-  IconMoodHappy,
-  IconTypography,
   IconUser,
-  IconUserPlus,
   IconTag,
   IconPoint,
+  IconUserCircle,
+  IconSettings,
+  IconCreditCard,
+  IconShield,
+  IconShieldLock,
+  IconNews,
 } from "@tabler/icons-react";
 
 import { uniqueId } from "lodash";
 
 const Menuitems = [
-  {
-    navlabel: true,
-    subheader: "HOME",
-  },           
-
+  // {
+  //   navlabel: true,
+  //   subheader: "HOME",
+  // },
   {
     id: uniqueId(),
     title: "Dashboard",
     icon: IconLayoutDashboard,
     href: "/",
   },
-
+  {
+    id: uniqueId(),
+    title: "Profile",
+    icon: IconUserCircle,
+    href: "/profile",
+  },
+  {
+    id: uniqueId(),
+    title: "Settings",
+    icon: IconSettings,
+    href: "/settings",
+  },
+   {
+    id: uniqueId(),
+    title: "Blog",
+    icon: IconNews,
+    href: "/cms/blog",
+  },  
+  {
+    id: uniqueId(),
+    title: "Subscription",
+    icon: IconCreditCard,
+    href: "/subscription",
+  },
   // {
-  //   id: uniqueId(),
-  //   title: "Icons",
-  //   icon: IconMoodHappy,
-  //   href: "/icons",
+  //   // navlabel: true,
+  //   // subheader: "ADMINISTRATION",
   // },
   {
     id: uniqueId(),
-    title: "User Management",
-    icon: IconUser,
-    href: "/sample-page",
+    title: "Admin Dashboard",
+    icon: IconShield,
+    href: "/admin/dashboard",
+    roles: ['admin', 'superadmin'],
+  },
+  {
+    id: uniqueId(),
+    title: "Super Admin",
+    icon: IconShieldLock,
+    href: "/superadmin/dashboard",
+    roles: ['superadmin'],
   },
   {
     id: uniqueId(),
     title: "Role Management",
     icon: IconTag,
-    href: "/role-user",
+    href: "/role-management",
+    roles: ['admin', 'superadmin'],
     children: [
       {
         id: uniqueId(),
-        title: "Role Management",
+        title: "Manage Roles",
         icon: IconPoint,
-        href: "/roles",
+        href: "/role-management/roles",
       },
       {
         id: uniqueId(),
-        title: "User",
+        title: "Manage Users",
         icon: IconPoint,
-        href: "/",
+        href: "/role-management/users",
       },
     ],
   },
-
-
-  // {
-  //   navlabel: true,
-  //   subheader: "AUTH",
-  // },
-  // {
-  //   id: uniqueId(),
-  //   title: "Login",
-  //   icon: IconLogin,
-  //   href: "/authentication/login",
-  // },
-  // {
-  //   id: uniqueId(),
-  //   title: "Register",
-  //   icon: IconUserPlus,
-  //   href: "/authentication/register",
-  // },
-  // {
-  //   navlabel: true,
-  //   subheader: " EXTRA",
-  // },
-
-
 ];
 
 export default Menuitems;
-
-

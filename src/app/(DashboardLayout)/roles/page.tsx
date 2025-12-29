@@ -34,6 +34,7 @@ import {
     selectAllRoles,
     type Role,
 } from '@/store/slices/roleSlice';
+import DeleteConfirmationDialog from '../components/shared/DeleteConfirmationDialog';
 
 export default function RolesPage() {
     const dispatch = useAppDispatch();
@@ -47,6 +48,10 @@ export default function RolesPage() {
         permissions: '',
         isActive: true,
     });
+
+    // Delete confirmation state
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [roleToDelete, setRoleToDelete] = useState<string | null>(null);
 
     const handleOpenDialog = (role?: Role) => {
         if (role) {
@@ -99,9 +104,15 @@ export default function RolesPage() {
         handleCloseDialog();
     };
 
-    const handleDelete = (roleId: string) => {
-        if (confirm('Are you sure you want to delete this role?')) {
-            dispatch(deleteRole(roleId));
+    const handleDeleteClick = (roleId: string) => {
+        setRoleToDelete(roleId);
+        setDeleteDialogOpen(true);
+    };
+
+    const handleConfirmDelete = () => {
+        if (roleToDelete) {
+            dispatch(deleteRole(roleToDelete));
+            setRoleToDelete(null);
         }
     };
 
@@ -171,7 +182,7 @@ export default function RolesPage() {
                                         <Tooltip title="Delete">
                                             <IconButton
                                                 size="small"
-                                                onClick={() => handleDelete(role.id)}
+                                                onClick={() => handleDeleteClick(role.id)}
                                                 color="error"
                                             >
                                                 <DeleteIcon fontSize="small" />
@@ -274,6 +285,15 @@ export default function RolesPage() {
                     </Button>
                 </DialogActions>
             </Dialog>
+
+            {/* Delete Confirmation Dialog */}
+            <DeleteConfirmationDialog
+                open={deleteDialogOpen}
+                onClose={() => setDeleteDialogOpen(false)}
+                onConfirm={handleConfirmDelete}
+                title="Delete Role"
+                content="Are you sure you want to delete this role? This action cannot be undone."
+            />
         </Box>
     );
 }

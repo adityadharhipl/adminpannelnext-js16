@@ -56,7 +56,6 @@ const authSlice = createSlice({
             state.error = null;
             removeCookie('token');
         },
-        // Action to set credentials from cookie on app load if needed
         setCredentials: (state, action) => {
             state.token = action.payload.token;
             state.user = action.payload.user;
@@ -71,12 +70,6 @@ const authSlice = createSlice({
         });
         builder.addCase(registerUser.fulfilled, (state, action) => {
             state.isLoading = false;
-            // Assuming the API returns the user and token on register, if not, adjust
-            // If it just returns success message:
-            // state.isAuthenticated = false; 
-            // But typically we might want to auto-login or just redirect.
-            // For now let's assume it returns user data similar to login or just success.
-            // If it returns a token, we set it.
             if (action.payload.token) {
                 state.token = action.payload.token;
                 state.isAuthenticated = true;
