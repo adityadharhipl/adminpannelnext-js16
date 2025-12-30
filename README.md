@@ -18,13 +18,6 @@ Using **Yarn**:
 ```bash
 yarn install
 ```
-
-Using **pnpm**:
-
-```bash
-pnpm install
-```
-
 ---
 
 ### 2. Start the Development Server
@@ -42,13 +35,6 @@ Using **Yarn**:
 ```bash
 yarn dev
 ```
-
-Using **pnpm**:
-
-```bash
-pnpm dev
-```
-
 ---
 
 ### 3. Open in Browser
