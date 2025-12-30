@@ -22,7 +22,18 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
 
       if (token && !isAuthenticated) {
         // Restore session
-        dispatch(setCredentials({ token, user: user || null }));
+        let restoredUser = user;
+        if (!restoredUser && typeof window !== 'undefined') {
+          const storedUser = localStorage.getItem('user');
+          if (storedUser) {
+            try {
+              restoredUser = JSON.parse(storedUser);
+            } catch (e) {
+              console.error("Failed to parse user from localStorage", e);
+            }
+          }
+        }
+        dispatch(setCredentials({ token, user: restoredUser || null }));
       }
       setIsChecking(false);
     };

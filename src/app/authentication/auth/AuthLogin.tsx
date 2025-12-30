@@ -46,15 +46,15 @@ const AuthLogin = ({ title, subtitle, subtext }: loginType) => {
   });
 
   const onSubmit = async (data: any) => {
-  const resultAction = await dispatch(loginUser(data));
+    const resultAction = await dispatch(loginUser(data));
 
-  if (loginUser.fulfilled.match(resultAction)) {
-    const token = resultAction.payload.token; 
-    localStorage.setItem("token", token);   
-    toast.success("Login successful!");
-    router.push("/"); // redirect to dashboard
-  }
-};
+    if (loginUser.fulfilled.match(resultAction)) {
+      const token = resultAction.payload.token;
+      localStorage.setItem("token", token);
+      toast.success("Login successful!");
+      router.push("/");
+    }
+  };
 
 
   return (

@@ -98,6 +98,9 @@ const authSlice = createSlice({
             state.isAuthenticated = false;
             state.error = null;
             removeCookie('token');
+            if (typeof window !== 'undefined') {
+                localStorage.removeItem('user');
+            }
         },
         setCredentials: (state, action) => {
             state.token = action.payload.token;
@@ -106,6 +109,9 @@ const authSlice = createSlice({
         },
         updateUser: (state, action) => {
             state.user = { ...state.user, ...action.payload };
+            if (state.user && typeof window !== 'undefined') {
+                localStorage.setItem('user', JSON.stringify(state.user));
+            }
         }
     },
     extraReducers: (builder) => {
@@ -120,6 +126,9 @@ const authSlice = createSlice({
                 state.token = action.payload.token;
                 state.isAuthenticated = true;
                 setCookie('token', action.payload.token);
+                if (action.payload.user && typeof window !== 'undefined') {
+                    localStorage.setItem('user', JSON.stringify(action.payload.user));
+                }
             }
         });
         builder.addCase(registerUser.rejected, (state, action) => {
@@ -138,6 +147,9 @@ const authSlice = createSlice({
             state.user = action.payload.user;
             state.isAuthenticated = true;
             setCookie('token', action.payload.token);
+            if (action.payload.user && typeof window !== 'undefined') {
+                localStorage.setItem('user', JSON.stringify(action.payload.user));
+            }
         });
         builder.addCase(loginUser.rejected, (state, action) => {
             state.isLoading = false;
@@ -160,6 +172,9 @@ const authSlice = createSlice({
             } else {
                 // Fallback if structure is different
                 state.user = { ...state.user, ...action.payload };
+            }
+            if (state.user && typeof window !== 'undefined') {
+                localStorage.setItem('user', JSON.stringify(state.user));
             }
         });
         builder.addCase(updateMyProfile.rejected, (state, action) => {
