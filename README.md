@@ -62,13 +62,7 @@ http://localhost:3000
 You’re now ready to start developing.
 **Happy coding! 🚀**
 
----
 
-If you want, I can also:
-
-* Make it **shorter**
-* Match a **premium admin template style**
-* Add **production build commands**
 
 Just tell me 👍
 
