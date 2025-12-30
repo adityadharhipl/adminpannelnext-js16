@@ -1,11 +1,13 @@
+it's time to install all the necessary dependencies. You can do this by typing the following command:
+npm install
+If you're using Yarn as your package manager, the command will be:
 
-To run the project locally:
+yarn install
+Okay, you're almost there. Now all you need to do is start the development server. If you're using npm, the command is:
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+And if you're using Yarn, it's:
 
-Open **[http://localhost:3000](http://localhost:3000)** in your browser.
+yarn dev
+ You're now ready to start developing. Happy coding!
 
 
